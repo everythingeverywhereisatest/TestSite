@@ -1,6 +1,6 @@
 /* Copyright (c) 2026 Bruder Motion. All rights reserved. See LICENSE. */
 /* Bruder Motion: page background
-   Cinematic film look behind all content: moving film grain, light rain on the glass, slow silver light leaks
+   Cinematic film look behind all content: moving film grain, droplets left on the glass after rain, slow silver light leaks
    drifting like a projector beam, a faint flicker, and a soft glow that follows the cursor.
    The light is a WebGL shader; the grain is a tiled noise layer stepped like film frames. */
 (() => {
@@ -24,59 +24,76 @@
   if (reduce) grain.style.animation = 'none';
   document.body.prepend(grain);
 
-  /* ── Rain: thin silver streaks and still droplets on the glass ───
-     Streaks fall at a slight slant; streaks and droplets near the cursor catch its glow. */
+  /* ── Just after rain: droplets left on the glass ─────────────────
+     Mostly still beads of every size, a few heavier drops slowly sliding down and
+     leaving a faint wet trail. Drops near the cursor catch its glow. */
   const rain = document.createElement('canvas');
   rain.id = 'bg-rain';
   rain.setAttribute('aria-hidden', 'true');
   document.body.prepend(rain);
   const rc = rain.getContext('2d');
   const small = innerWidth < 760;
-  let RW = 0, RH = 0, DPR = 1, drops = [], beads = [];
+
+  // one droplet drawn once, then stamped at any size: dark lensing edge, soft body, bright highlight
+  const sprite = document.createElement('canvas');
+  sprite.width = sprite.height = 64;
+  const sc2 = sprite.getContext('2d');
+  let g = sc2.createRadialGradient(34, 36, 6, 32, 32, 30);
+  g.addColorStop(0, 'rgba(200,205,215,.10)');
+  g.addColorStop(.72, 'rgba(160,165,175,.16)');
+  g.addColorStop(.9, 'rgba(0,0,0,.55)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  sc2.fillStyle = g; sc2.beginPath(); sc2.arc(32, 32, 30, 0, 6.283); sc2.fill();
+  sc2.strokeStyle = 'rgba(235,240,250,.45)'; sc2.lineWidth = 1.6;          // rim light on the lower edge
+  sc2.beginPath(); sc2.arc(32, 32, 26, .35, 2.8); sc2.stroke();
+  g = sc2.createRadialGradient(23, 22, 0, 23, 22, 9);                       // specular highlight
+  g.addColorStop(0, 'rgba(255,255,255,.95)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  sc2.fillStyle = g; sc2.beginPath(); sc2.arc(23, 22, 9, 0, 6.283); sc2.fill();
+
+  let RW = 0, RH = 0, DPR = 1, beads = [], sliders = [];
   const rnd = (a, b) => a + Math.random() * (b - a);
-  const drop = (anyY) => ({ x: rnd(-60, RW + 60), y: anyY ? rnd(-RH, RH) : rnd(-260, -40), len: rnd(28, 110), v: rnd(380, 820), a: rnd(.05, .17), w: rnd(.6, 1.1) });
-  const bead = () => ({ x: rnd(0, RW), y: rnd(0, RH), r: rnd(.8, 2.4), a: rnd(.05, .12), life: rnd(6, 18) });
+  const bead = born => ({ x: rnd(0, RW), y: rnd(0, RH), r: 1 + 7 * Math.random() ** 2.4, a: rnd(.45, .8), age: born ? rnd(0, 40) : 0, life: rnd(25, 60) });
+  const slider = top => ({ x: rnd(0, RW), y: top ? rnd(-40, -10) : rnd(0, RH), r: rnd(6, 10), a: rnd(.6, .85), v: 0, rest: rnd(0, 4), trail: [] });
   const rsize = () => {
-    DPR = Math.min(devicePixelRatio || 1, 1.5);
+    DPR = Math.min(devicePixelRatio || 1, 2);
     RW = innerWidth; RH = innerHeight;
     rain.width = Math.round(RW * DPR); rain.height = Math.round(RH * DPR);
     rc.setTransform(DPR, 0, 0, DPR, 0, 0);
-    const n = Math.min(small ? 70 : 170, Math.round(RW * RH / (small ? 5200 : 9000)));
-    drops = Array.from({ length: n }, () => drop(true));
-    beads = Array.from({ length: small ? 18 : 42 }, bead);
+    beads = Array.from({ length: Math.min(small ? 45 : 110, Math.round(RW * RH / 11000)) }, () => bead(true));
+    sliders = Array.from({ length: small ? 3 : 6 }, () => slider(false));
   };
   rsize();
   addEventListener('resize', rsize);
   let rmx = -999, rmy = -999;
   addEventListener('pointermove', e => { rmx = e.clientX; rmy = e.clientY; }, { passive: true });
-  const SLANT = .12;                                   // wind: dx per px of fall
-  const glow = (x, y) => 1 + 2.6 * Math.exp(-((x - rmx) ** 2 + (y - rmy) ** 2) / (2 * 170 * 170));
+  const glow = (x, y) => 1 + 2.2 * Math.exp(-((x - rmx) ** 2 + (y - rmy) ** 2) / (2 * 180 * 180));
+  const stamp = (x, y, r, a) => { rc.globalAlpha = Math.min(a, 1); rc.drawImage(sprite, x - r, y - r, r * 2, r * 2); };
+
   let rlast = performance.now();
   const rainFrame = now => {
     const dt = Math.min((now - rlast) / 1000, .05); rlast = now;
     rc.clearRect(0, 0, RW, RH);
-    rc.lineCap = 'round';
-    for (const d of drops) {
-      d.y += d.v * dt; d.x += d.v * dt * SLANT;
-      if (d.y - d.len > RH) Object.assign(d, drop(false));
-      const tx = d.x - d.len * SLANT, ty = d.y - d.len;
-      const a = Math.min(d.a * glow(d.x, d.y), .55);
-      const g = rc.createLinearGradient(tx, ty, d.x, d.y);
-      g.addColorStop(0, 'rgba(225,230,240,0)');
-      g.addColorStop(1, `rgba(225,230,240,${a})`);
-      rc.strokeStyle = g; rc.lineWidth = d.w;
-      rc.beginPath(); rc.moveTo(tx, ty); rc.lineTo(d.x, d.y); rc.stroke();
-    }
     for (const b of beads) {
-      b.life -= dt;
-      if (b.life <= 0) Object.assign(b, bead());
-      const fade = Math.min(1, b.life / 2);
-      const a = Math.min(b.a * glow(b.x, b.y) * fade, .6);
-      rc.fillStyle = `rgba(230,234,242,${a})`;
-      rc.beginPath(); rc.arc(b.x, b.y, b.r, 0, 6.283); rc.fill();
-      rc.fillStyle = `rgba(255,255,255,${a * 1.4})`;   // tiny highlight
-      rc.beginPath(); rc.arc(b.x - b.r * .35, b.y - b.r * .35, b.r * .35, 0, 6.283); rc.fill();
+      b.age += dt;
+      if (b.age > b.life) Object.assign(b, bead(false));
+      const fade = Math.min(1, b.age / 3, (b.life - b.age) / 3);           // ease in and out
+      stamp(b.x, b.y, b.r, b.a * fade * .75 * glow(b.x, b.y));
     }
+    for (const s of sliders) {
+      // heavy drops stick, then slip a little, then stick again
+      if (s.rest > 0) { s.rest -= dt; s.v *= .9; }
+      else { s.v = Math.min(s.v + 40 * dt, rnd(18, 46)); if (Math.random() < dt * .5) s.rest = rnd(1.5, 6); }
+      s.y += s.v * dt; s.x += Math.sin(s.y * .02) * s.v * dt * .08;   // drift only while moving
+      if (s.v > 2) s.trail.push({ x: s.x, y: s.y - s.r * .6, a: 1 });
+      for (const t of s.trail) t.a -= dt * .08;
+      s.trail = s.trail.filter(t => t.a > 0).slice(-260);
+      rc.fillStyle = 'rgb(225,230,240)';
+      for (const t of s.trail) { rc.globalAlpha = t.a * .06 * glow(t.x, t.y); rc.fillRect(t.x - s.r * .2, t.y, s.r * .4, 1.2); }
+      stamp(s.x, s.y, s.r, s.a * .8 * glow(s.x, s.y));
+      if (s.y - s.r > RH && !s.trail.length) Object.assign(s, slider(true));
+    }
+    rc.globalAlpha = 1;
     if (!reduce && !document.hidden) requestAnimationFrame(rainFrame);
   };
   requestAnimationFrame(rainFrame);
