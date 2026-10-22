@@ -180,7 +180,7 @@ const CONTACT = {
   });
 
   /* ── Video lightbox ────────────────────────────────────────────── */
-  const lb = $('#lightbox'), lbFrame = $('.lb-frame'), lbIframe = $('#lb-iframe'), lbLink = $('#lb-link');
+  const lb = $('#lightbox'), lbFrame = $('.lb-frame'), lbIframe = $('#lb-iframe'), lbLink = $('#lb-link'), lbVideo = $('#lb-video');
   let lenis = null;
   // h is the private hash that unlisted Vimeo videos need
   // Safari (and every iPhone/iPad browser) blocks sound in an embedded player that starts on its own,
@@ -218,12 +218,53 @@ const CONTACT = {
     lbCover.classList.remove('off'); heard = false;
     coverTimers.forEach(clearTimeout); coverTimers = [];
     later(lift, 15000);
+    lbVideo.hidden = true; lbIframe.hidden = false; lbLink.hidden = false;
     lbIframe.src = `https://player.vimeo.com/video/${id}?${h ? `h=${h}&` : ''}autoplay=1${webkitOnly ? '&muted=1' : ''}&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
     lbLink.href = `https://vimeo.com/${id}${h ? `/${h}` : ''}`;
     lbFrame.classList.toggle('vertical', !!vertical);
     lb.hidden = false; lenis && lenis.stop(); $('#lb-close').focus();
   };
-  const closeVideo = () => { lb.hidden = true; lift(); lbIframe.removeAttribute('src'); lenis && lenis.start(); };
+  /* Clips hosted on the site itself stream in small pieces (HLS): Safari and iPhones play that natively,
+     other browsers through hls.js, which loads in the background once the page has settled. */
+  let hls = null, hlsLoading = null;
+  const nativeHls = !!lbVideo.canPlayType('application/vnd.apple.mpegurl');
+  const loadHls = () => hlsLoading || (hlsLoading = new Promise((ok, fail) => {
+    if (window.Hls) return ok();
+    const sc = document.createElement('script');
+    sc.src = 'vendor/hls.light.min.js'; sc.onload = ok; sc.onerror = fail;
+    document.head.appendChild(sc);
+  }));
+  lbVideo.addEventListener('playing', lift);
+  const openLocal = (src, thumb) => {
+    lbCover.style.backgroundImage = thumb ? `linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url("${thumb}")` : '';
+    lbCover.classList.remove('off');
+    coverTimers.forEach(clearTimeout); coverTimers = [];
+    later(lift, 15000);
+    lbIframe.hidden = true; lbLink.hidden = true; lbVideo.hidden = false;
+    lbFrame.classList.remove('vertical');
+    lbVideo.poster = thumb || '';
+    lbVideo.muted = false;
+    lb.hidden = false; lenis && lenis.stop(); $('#lb-close').focus();
+    const go = () => lbVideo.play().catch(lift);         // if the browser refuses, the player's own controls take over
+    if (nativeHls) { lbVideo.src = src; go(); return; }
+    loadHls().then(() => {
+      if (lb.hidden) return;
+      if (!window.Hls.isSupported()) { lbVideo.src = src; return go(); }
+      hls = new window.Hls({ startLevel: -1, capLevelToPlayerSize: true });
+      hls.on(window.Hls.Events.ERROR, (_, d) => { if (d.fatal) lift(); });
+      hls.loadSource(src); hls.attachMedia(lbVideo); go();
+    }, lift);
+  };
+  const closeVideo = () => {
+    lb.hidden = true; lift(); lbIframe.removeAttribute('src');
+    lbVideo.pause(); if (hls) { hls.destroy(); hls = null; } lbVideo.removeAttribute('src'); lbVideo.load();
+    lenis && lenis.start();
+  };
+  $$('[data-video]').forEach(b => b.addEventListener('click', () => openLocal(b.dataset.video, b.querySelector('img')?.currentSrc)));
+  if (!nativeHls && $('[data-video]')) {
+    $$('[data-video]').forEach(b => ['pointerenter', 'touchstart', 'focus'].forEach(t => b.addEventListener(t, loadHls, { once: true, passive: true })));
+    addEventListener('load', () => setTimeout(() => loadHls().catch(() => {}), 1500), { once: true });
+  }
   $$('[data-vimeo]').forEach(b => b.addEventListener('click', () => openVideo(b.dataset.vimeo, b.classList.contains('clip-v') || 'vertical' in b.dataset, b.dataset.vimeoH, b.querySelector('img')?.currentSrc)));
   // Warm up the Vimeo player once (its scripts then come from cache), when the work section nears view or a clip is touched
   let warmed = false;
@@ -358,7 +399,7 @@ const CONTACT = {
     const cx = gsap.quickTo(cur, 'x', { duration: .35, ease: 'power3' });
     const cy = gsap.quickTo(cur, 'y', { duration: .35, ease: 'power3' });
     addEventListener('pointermove', e => { cx(e.clientX); cy(e.clientY); });
-    $$('[data-vimeo]').forEach(v => {
+    $$('[data-vimeo], [data-video]').forEach(v => {
       v.addEventListener('pointerenter', () => cur.classList.add('show'));
       v.addEventListener('pointerleave', () => cur.classList.remove('show'));
     });
