@@ -105,9 +105,10 @@ const CONTACT = {
       v.paused ? v.play().catch(() => {}) : v.pause();
     });
     new IntersectionObserver(([e]) => { if (e.intersectionRatio < .25 && !v.muted) { v.muted = true; sync(); } }, { threshold: .25 }).observe(panel);
-    // start buffering before the click, right after the page loads (phones get the lighter 720p file)
+    // the reel starts buffering as the page opens (preload="auto"; phones get the lighter 720p file);
+    // with Data Saver on it waits for a touch instead
     const warm = () => { if (v.preload !== 'auto') v.preload = 'auto'; };
-    if (!saveData) addEventListener('load', () => setTimeout(warm, 300), { once: true });
+    if (saveData) v.preload = 'metadata';
     ['pointerenter', 'touchstart', 'focusin'].forEach(t => panel.addEventListener(t, warm, { once: true, passive: true }));
   });
 
@@ -182,8 +183,12 @@ const CONTACT = {
   const lb = $('#lightbox'), lbFrame = $('.lb-frame'), lbIframe = $('#lb-iframe'), lbLink = $('#lb-link');
   let lenis = null;
   // h is the private hash that unlisted Vimeo videos need
+  // Safari (and every iPhone/iPad browser) blocks sound in an embedded player that starts on its own,
+  // so there the clip starts muted on the first tap instead of waiting for a second tap
+  const webkitOnly = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+    (/Safari/.test(navigator.userAgent) && !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android/.test(navigator.userAgent));
   const openVideo = (id, vertical, h) => {
-    lbIframe.src = `https://player.vimeo.com/video/${id}?${h ? `h=${h}&` : ''}autoplay=1&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
+    lbIframe.src = `https://player.vimeo.com/video/${id}?${h ? `h=${h}&` : ''}autoplay=1${webkitOnly ? '&muted=1' : ''}&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
     lbLink.href = `https://vimeo.com/${id}${h ? `/${h}` : ''}`;
     lbFrame.classList.toggle('vertical', !!vertical);
     lb.hidden = false; lenis && lenis.stop(); $('#lb-close').focus();
@@ -208,6 +213,8 @@ const CONTACT = {
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); warmVimeo(); } }, { rootMargin: '800px 0px' });
     io.observe(workSec);
   }
+  // otherwise warm up anyway once the page has settled, so the first click anywhere is quick
+  addEventListener('load', () => setTimeout(warmVimeo, 2500), { once: true });
   $('#lb-close').addEventListener('click', closeVideo);
   lb.addEventListener('click', e => { if (e.target === lb) closeVideo(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeVideo(); });
