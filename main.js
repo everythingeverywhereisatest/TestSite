@@ -187,14 +187,16 @@ const CONTACT = {
   // so there the clip starts muted on the first tap instead of waiting for a second tap
   const webkitOnly = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
     (/Safari/.test(navigator.userAgent) && !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android/.test(navigator.userAgent));
-  const openVideo = (id, vertical, h) => {
+  const openVideo = (id, vertical, h, thumb) => {
+    // the clip's own thumbnail sits behind the player while Vimeo starts up, so the box is never empty
+    lbFrame.style.backgroundImage = thumb ? `linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url("${thumb}")` : '';
     lbIframe.src = `https://player.vimeo.com/video/${id}?${h ? `h=${h}&` : ''}autoplay=1${webkitOnly ? '&muted=1' : ''}&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
     lbLink.href = `https://vimeo.com/${id}${h ? `/${h}` : ''}`;
     lbFrame.classList.toggle('vertical', !!vertical);
     lb.hidden = false; lenis && lenis.stop(); $('#lb-close').focus();
   };
-  const closeVideo = () => { lb.hidden = true; lbIframe.removeAttribute('src'); lenis && lenis.start(); };
-  $$('[data-vimeo]').forEach(b => b.addEventListener('click', () => openVideo(b.dataset.vimeo, b.classList.contains('clip-v') || 'vertical' in b.dataset, b.dataset.vimeoH)));
+  const closeVideo = () => { lb.hidden = true; lbIframe.removeAttribute('src'); lbFrame.style.backgroundImage = ''; lenis && lenis.start(); };
+  $$('[data-vimeo]').forEach(b => b.addEventListener('click', () => openVideo(b.dataset.vimeo, b.classList.contains('clip-v') || 'vertical' in b.dataset, b.dataset.vimeoH, b.querySelector('img')?.currentSrc)));
   // Warm up the Vimeo player once (its scripts then come from cache), when the work section nears view or a clip is touched
   let warmed = false;
   const warmVimeo = () => {
