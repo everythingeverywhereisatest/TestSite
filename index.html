@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--
+  Bruder Motion website
+  Copyright (c) 2026 Bruder Motion. All rights reserved.
+  Proprietary. Copying, modification, redistribution, reuse
+  or use for AI/ML training without written permission is prohibited.
+  See LICENSE.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bruder Motion</title>
+<meta name="description" content="Bruder Motion edits videos for TEDx speakers, YouTube creators and founders. Short-form, brand films, motion graphics, color and sound." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<!-- open connections to Vimeo early so clips start faster -->
+<link rel="preconnect" href="https://player.vimeo.com" />
+<link rel="preconnect" href="https://f.vimeocdn.com" />
+<link rel="preconnect" href="https://i.vimeocdn.com" />
+<link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css?v=35" />
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<header class="nav" id="top">
+  <div class="nav-pill">
+    <a href="#top" class="mark"><span class="mark-dot"></span>Bruder Motion</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#clients">Clients</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#team">Team</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn btn-white btn-sm">Start a project</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-arc" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow mono" data-hero><span class="rec"></span> Video editor &amp; motion designer<span class="eb-yrs"> · 6+ years</span></p>
+
+      <h1 class="wordmark" aria-label="Bruder Motion">
+        <span class="wm-row" aria-hidden="true"><span class="wm-word" data-chars>Bruder</span></span>
+        <span class="wm-row" aria-hidden="true"><span class="wm-word" data-chars>Motion</span></span>
+      </h1>
+
+      <p class="hero-sub" data-hero>Edits for <strong>TEDx</strong> speakers, YouTube creators and founders. Short-form that stops the scroll, and long-form that keeps people watching.</p>
+      <div class="hero-btns" data-hero>
+        <a href="#contact" class="btn btn-white">Start a project</a>
+        <a href="#work" class="btn btn-ghost"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20"/></svg>Watch the work</a>
+      </div>
+    </div>
+
+    <!-- Cinematic reel panel -->
+    <div class="wrap">
+      <div class="reel-panel" id="reel-panel">
+        <img class="reel-poster" src="showreel-poster.jpg?v=35" alt="" aria-hidden="true" />
+        <video loop playsinline preload="metadata" poster="showreel-poster.jpg?v=35" data-reel-video>
+          <source src="showreel-720.mp4?v=35" type="video/mp4" media="(max-width: 640px)" />
+          <source src="showreel.mp4?v=35" type="video/mp4" />
+        </video>
+        <div class="panel-chip"><span class="rec"></span><span><b>Showreel 2026</b><small>Short-form · Brand films · Motion</small></span></div>
+        <button class="reel-play" type="button" aria-label="Play showreel" data-reel-play>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+          <span>Play showreel</span>
+        </button>
+        <button class="reel-sound" type="button" aria-pressed="true" data-reel-sound>
+          <svg class="ic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+          <svg class="ic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+          <span>Mute</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="strip-label mono">Editing for</p>
+      <div class="logo-strip" aria-label="Clients">
+        <div class="logo-track" id="logo-track">
+          <span><em class="ted">TEDx</em> Mike Johns</span>
+          <span>Adrian Barrin</span>
+          <span>Jem Social</span>
+          <span>Feels Like Friday</span>
+          <span><small>As featured in</small> Forward Times</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT / NUMBERS ═══ -->
+  <section class="sec" id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow mono">/ 01 / <span class="red">About</span></p>
+          <h2 class="h2" data-reveal>Six years of edits.<br /><span class="muted">Every frame intentional.</span></h2>
+        </div>
+        <p class="sec-note" data-reveal>A video editor and motion designer working across social content, brand campaigns and long-form storytelling. Fast turnaround, clean execution, no templates.</p>
+      </div>
+      <div class="bento" data-reveal-group>
+        <div class="cell">
+          <p class="cell-label mono"><span class="ic">◷</span> Experience</p>
+          <p class="num"><span data-count="6">6</span><sup>+</sup></p>
+          <p class="cell-foot">Years cutting for brands, podcasters and creators.</p>
+        </div>
+        <div class="cell">
+          <p class="cell-label mono"><span class="ic">★</span> Headline clients</p>
+          <p class="num"><span data-count="3">3</span></p>
+          <p class="cell-foot">A TEDx speaker, a YouTube creator and a startup founder.</p>
+        </div>
+        <div class="cell">
+          <p class="cell-label mono"><span class="ic">▶</span> In this reel</p>
+          <p class="num"><span data-count="19">19</span></p>
+          <p class="cell-foot">Six long-form films and thirteen short-form edits below.</p>
+        </div>
+        <div class="cell cell-red">
+          <p class="cell-label mono"><span class="ic">◎</span> Formats</p>
+          <p class="num"><span data-count="4">4</span></p>
+          <p class="cell-foot">Reels, YouTube, ads and brand films.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURED CLIENTS ═══ -->
+  <section class="sec" id="clients">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow mono">/ 02 / <span class="red">Clients</span></p>
+          <h2 class="h2" data-reveal>Trusted by people<br /><span class="muted">who live on camera.</span></h2>
+        </div>
+        <p class="sec-note" data-reveal>Three headline clients, plus part-time work with Feels Like Friday.</p>
+      </div>
+
+      <!-- CLIENT PHOTOS: put mike-johns.jpg, adrian-barrin.jpg and bree-flemings.jpg next to index.html -->
+      <div class="client-grid" data-reveal-group>
+        <article class="client" data-tilt>
+          <div class="client-photo empty">
+            <img src="mike-johns.jpg" alt="Mike Johns" />
+            <span class="initials">MJ</span>
+            <span class="ted-badge ted-float">TEDx</span>
+          </div>
+          <div class="client-body">
+            <div>
+              <h3 class="client-name">Mike Johns</h3>
+              <p class="client-role mono"><span class="ted">TEDx</span> Speaker · Futurist</p>
+            </div>
+            <a class="round-link" href="https://mikejohns.ceo/" target="_blank" rel="noopener" aria-label="Visit mikejohns.ceo">↗</a>
+          </div>
+        </article>
+        <article class="client" data-tilt>
+          <div class="client-photo empty">
+            <img src="adrian-barrin.jpg" data-alt-src="https://unavatar.io/youtube/AdrianBarrin?fallback=false" alt="Adrian Barrin" />
+            <span class="initials">AB</span>
+          </div>
+          <div class="client-body">
+            <div>
+              <h3 class="client-name">Adrian Barrin</h3>
+              <p class="client-role mono">YouTube creator</p>
+            </div>
+            <a class="round-link" href="https://www.youtube.com/@AdrianBarrin/videos" target="_blank" rel="noopener" aria-label="Visit Adrian Barrin on YouTube">↗</a>
+          </div>
+        </article>
+        <article class="client" data-tilt>
+          <div class="client-photo empty">
+            <img src="bree-flemings.jpg" alt="Bree Flemings" />
+            <span class="initials">BF</span>
+          </div>
+          <div class="client-body">
+            <div>
+              <h3 class="client-name">Bree Flemings</h3>
+              <p class="client-role mono">Founder, Jem Social</p>
+            </div>
+            <a class="round-link" href="https://www.jem.social/influencer-finder" target="_blank" rel="noopener" aria-label="Visit Jem Social">↗</a>
+          </div>
+          <a class="press mono" href="https://www.forwardtimes.com/tech/building-systems-we-deserve-bree-flemings-is-shaping-the-future-of-tech-for-queer-creatives/article_52aff8db-289a-4cbe-8012-19df3126e1a8.html" target="_blank" rel="noopener">As featured in <b>Forward Times</b> ↗</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WORK ═══ -->
+  <section class="sec" id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow mono">/ 03 / <span class="red">Work</span></p>
+          <h2 class="h2" data-reveal>Cuts that hold attention.<br /><span class="muted">Tap any clip to play it.</span></h2>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Work type" data-reveal>
+          <button class="tab is-on" role="tab" aria-selected="true" aria-controls="panel-long" id="tab-long">Long form <span class="mono">06</span></button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-short" id="tab-short">Short form <span class="mono">13</span></button>
+        </div>
+      </div>
+
+      <div class="work-panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long">
+        <div class="film-grid">
+          <button class="clip clip-h" data-tilt data-vimeo="1190846467"><img src="https://vumbnail.com/1190846467.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F01</span><span class="play-ic"></span></button>
+          <button class="clip clip-h" data-tilt data-vimeo="1190846468"><img src="https://vumbnail.com/1190846468.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F02</span><span class="play-ic"></span></button>
+          <button class="clip clip-h" data-tilt data-vimeo="1190846563"><img src="https://vumbnail.com/1190846563.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F03</span><span class="play-ic"></span></button>
+          <button class="clip clip-h" data-tilt data-vimeo="1190846682"><img src="https://vumbnail.com/1190846682.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F04</span><span class="play-ic"></span></button>
+          <button class="clip clip-h" data-tilt data-vimeo="1189885898"><img src="https://vumbnail.com/1189885898.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F05</span><span class="play-ic"></span></button>
+          <button class="clip clip-h" data-tilt data-vimeo="1189880773"><img src="https://vumbnail.com/1189880773.jpg" alt="" loading="lazy" /><span class="clip-tag mono">F06</span><span class="play-ic"></span></button>
+        </div>
+      </div>
+
+      <div class="work-panel" id="panel-short" role="tabpanel" aria-labelledby="tab-short" hidden>
+        <div class="reel-row" id="reel-row">
+          <button class="clip clip-v" data-vimeo="1237818670" data-vimeo-h="0fc1762a94" aria-label="Play AI Music"><img src="thumbs/new-1.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R01</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1237819468" data-vimeo-h="22704d885b" aria-label="Play Vox animation style"><img src="thumbs/new-3.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R02</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1190847886"><img src="https://vumbnail.com/1190847886.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R03</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1237859523" data-vimeo-h="63b7fb5059" aria-label="Play Kinetic type short"><img src="thumbs/new-4.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R04</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1237860046" data-vimeo-h="6aaf7c9405" aria-label="Play Retro animation short"><img src="thumbs/new-6.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R05</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1237860045" data-vimeo-h="a510967d5c" aria-label="Play Focus app short"><img src="thumbs/new-5.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R06</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1237860534" data-vimeo-h="caeaf66749" aria-label="Play Brand motion kit short"><img src="thumbs/new-7.jpg?v=35" alt="" loading="lazy" /><span class="clip-tag mono">R07</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1191188043"><img src="https://vumbnail.com/1191188043.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R08</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1191292761"><img src="https://vumbnail.com/1191292761.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R09</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1189885269"><img src="https://vumbnail.com/1189885269.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R10</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1189885267"><img src="https://vumbnail.com/1189885267.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R11</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1191295273"><img src="https://vumbnail.com/1191295273.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R12</span><span class="play-ic"></span></button>
+          <button class="clip clip-v" data-vimeo="1189879898"><img src="https://vumbnail.com/1189879898.jpg" alt="" loading="lazy" /><span class="clip-tag mono">R13</span><span class="play-ic"></span></button>
+        </div>
+        <div class="row-ctrl">
+          <div class="row-progress"><span id="row-progress"></span></div>
+          <button class="arrow" data-dir="-1" aria-label="Previous clips">←</button>
+          <button class="arrow" data-dir="1" aria-label="Next clips">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES (expanding panels) ═══ -->
+  <section class="sec" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow mono">/ 04 / <span class="red">Services</span></p>
+          <h2 class="h2" data-reveal>What we cut.<br /><span class="muted">And how it lands.</span></h2>
+        </div>
+        <p class="sec-note" data-reveal>Open a service to see what's inside. Most projects use two or three of them together.</p>
+      </div>
+
+      <div class="svc" id="svc" data-reveal>
+        <article class="svc-item is-open">
+          <button class="svc-tab" aria-expanded="true"><span class="mono">01</span><span class="svc-label">Short-form</span></button>
+          <div class="svc-body">
+            <button class="svc-media" data-vimeo="1191188043" data-vertical aria-label="Play video"><img src="https://vumbnail.com/1191188043.jpg" alt="" loading="lazy" /><span class="play-ic"></span></button>
+            <div class="svc-copy">
+              <h3>Short-form editing</h3>
+              <p>Reels, TikToks and Shorts cut for retention, built for the first three seconds and the algorithm after that.</p>
+              <p class="mono muted">What's included</p>
+              <ul class="chips"><li>Hooks &amp; pacing</li><li>Captions</li><li>Ad creatives</li><li>Influencer edits</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="svc-item">
+          <button class="svc-tab" aria-expanded="false"><span class="mono">02</span><span class="svc-label">Brand films</span></button>
+          <div class="svc-body">
+            <button class="svc-media" data-vimeo="1190846467" aria-label="Play video"><img src="https://vumbnail.com/1190846467.jpg" alt="" loading="lazy" /><span class="play-ic"></span></button>
+            <div class="svc-copy">
+              <h3>Brand films &amp; YouTube</h3>
+              <p>Long-form storytelling that gives a brand or a channel its voice, from talks and podcasts to campaign films.</p>
+              <p class="mono muted">What's included</p>
+              <ul class="chips"><li>Story structure</li><li>Podcasts &amp; talks</li><li>Event recaps</li><li>Promos</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="svc-item">
+          <button class="svc-tab" aria-expanded="false"><span class="mono">03</span><span class="svc-label">Motion graphics</span></button>
+          <div class="svc-body">
+            <button class="svc-media" data-vimeo="1190846563" aria-label="Play video"><img src="https://vumbnail.com/1190846563.jpg" alt="" loading="lazy" /><span class="play-ic"></span></button>
+            <div class="svc-copy">
+              <h3>Motion graphics</h3>
+              <p>Titles, transitions and effects that add polish to any production, built in After Effects.</p>
+              <p class="mono muted">What's included</p>
+              <ul class="chips"><li>Kinetic type</li><li>Lower thirds</li><li>Compositing</li><li>Logo animation</li></ul>
+            </div>
+          </div>
+        </article>
+        <article class="svc-item">
+          <button class="svc-tab" aria-expanded="false"><span class="mono">04</span><span class="svc-label">Color &amp; sound</span></button>
+          <div class="svc-body">
+            <button class="svc-media" data-vimeo="1190846682" aria-label="Play video"><img src="https://vumbnail.com/1190846682.jpg" alt="" loading="lazy" /><span class="play-ic"></span></button>
+            <div class="svc-copy">
+              <h3>Color &amp; sound</h3>
+              <p>Grading for a consistent look across every clip, plus sound design and a clean mix so every cut lands.</p>
+              <p class="mono muted">What's included</p>
+              <ul class="chips"><li>Color grading</li><li>Sound design</li><li>Music &amp; mix</li><li>Noise cleanup</li></ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROCESS ═══ -->
+  <section class="sec" id="process">
+    <div class="wrap split">
+      <div class="split-left">
+        <p class="eyebrow mono">/ 05 / <span class="red">Process</span></p>
+        <h2 class="h2" data-reveal>How the work goes.<br /><span class="muted">You're in every step.</span></h2>
+        <p class="sec-note" data-reveal>From your raw footage to a finished file, with a clear plan before the first cut.</p>
+        <a href="#contact" class="btn btn-white" data-reveal>Talk to us</a>
+      </div>
+      <div class="acc" data-acc data-reveal-group>
+        <details open>
+          <summary><span class="mono muted">01</span>Brief<span class="plus"></span></summary>
+          <div class="acc-body"><p>You send the footage and tell us the goal, the platform and the deadline. We agree on the style before anything is cut.</p><ul class="chips"><li>Goal</li><li>Platform</li><li>References</li><li>Deadline</li></ul></div>
+        </details>
+        <details>
+          <summary><span class="mono muted">02</span>First cut<span class="plus"></span></summary>
+          <div class="acc-body"><p>We build the story, pacing and sound, then send you a first version to watch.</p></div>
+        </details>
+        <details>
+          <summary><span class="mono muted">03</span>Revisions<span class="plus"></span></summary>
+          <div class="acc-body"><p>You leave notes, we refine. Captions, graphics and color are polished here.</p></div>
+        </details>
+        <details>
+          <summary><span class="mono muted">04</span>Delivery<span class="plus"></span></summary>
+          <div class="acc-body"><p>Final files in every size you need, ready to post or publish.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SOFTWARE ARC ═══ -->
+  <section class="sec" id="software">
+    <div class="wrap">
+      <div class="sec-head sec-head-center">
+        <p class="eyebrow mono">/ 06 / <span class="red">Software</span></p>
+        <h2 class="h2" data-reveal>Cut in the tools<br /><span class="muted">the industry runs on.</span></h2>
+      </div>
+      <div class="arc" id="arc">
+        <div class="arc-ring" aria-hidden="true"></div>
+        <div class="arc-ticks" aria-hidden="true"></div>
+        <div class="arc-dot" aria-hidden="true"></div>
+        <div class="arc-ring arc-ring-2" aria-hidden="true"></div>
+        <div class="arc-center"><img src="bm-logo.png?v=35" alt="Bruder Motion" /></div>
+        <div class="arc-tools" id="arc-tools">
+          <div class="tool" style="--a:-75deg">
+            <span class="tool-ic"><img src="icons/pr.svg?v=35" alt="" /></span>
+            <span class="tool-name">Premiere Pro<small>Editing</small></span>
+          </div>
+          <div class="tool" style="--a:-45deg">
+            <span class="tool-ic"><img src="icons/ae.svg?v=35" alt="" /></span>
+            <span class="tool-name">After Effects<small>Motion</small></span>
+          </div>
+          <div class="tool" style="--a:-15deg">
+            <span class="tool-ic"><img src="icons/davinci.svg?v=35" alt="" /></span>
+            <span class="tool-name">DaVinci Resolve<small>Color</small></span>
+          </div>
+          <div class="tool" style="--a:15deg">
+            <span class="tool-ic"><img src="icons/capcut.svg?v=35" alt="" /></span>
+            <span class="tool-name">CapCut<small>Short-form</small></span>
+          </div>
+          <div class="tool" style="--a:45deg">
+            <span class="tool-ic"><img src="icons/ps.svg?v=35" alt="" /></span>
+            <span class="tool-name">Photoshop<small>Design</small></span>
+          </div>
+          <div class="tool" style="--a:75deg">
+            <span class="tool-ic"><img src="icons/lr.svg?v=35" alt="" /></span>
+            <span class="tool-name">Lightroom<small>Photo</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:105deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/pr.svg?v=35" alt="" /></span>
+            <span class="tool-name">Premiere Pro<small>Editing</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:135deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/ae.svg?v=35" alt="" /></span>
+            <span class="tool-name">After Effects<small>Motion</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:165deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/davinci.svg?v=35" alt="" /></span>
+            <span class="tool-name">DaVinci Resolve<small>Color</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:195deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/capcut.svg?v=35" alt="" /></span>
+            <span class="tool-name">CapCut<small>Short-form</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:225deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/ps.svg?v=35" alt="" /></span>
+            <span class="tool-name">Photoshop<small>Design</small></span>
+          </div>
+          <div class="tool tool-dup" style="--a:255deg" aria-hidden="true">
+            <span class="tool-ic"><img src="icons/lr.svg?v=35" alt="" /></span>
+            <span class="tool-name">Lightroom<small>Photo</small></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TEAM ═══ -->
+  <section class="sec" id="team">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow mono">/ 07 / <span class="red">Team</span></p>
+          <h2 class="h2" data-reveal>You meet your editor.<br /><span class="muted">Nobody hands you off.</span></h2>
+        </div>
+        <p class="sec-note" data-reveal>The person you talk to is the person who cuts your video.</p>
+      </div>
+      <!-- EDITOR: put editor-1.jpg next to index.html, then replace the name and role -->
+      <div class="team-grid" data-reveal-group>
+        <article class="editor editor-color" data-tilt>
+          <div class="editor-photo empty"><img src="editor-1.jpg?v=35" alt="Bruder Motion lead editor" /><span class="mono muted">Photo</span></div>
+          <div class="editor-body"><div><h3 class="editor-name">Bruder Motion</h3><p class="mono muted">Lead editor</p></div><span class="round-link" aria-hidden="true">+</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  <section class="sec" id="faq">
+    <div class="wrap split">
+      <div class="split-left">
+        <p class="eyebrow mono">/ 08 / <span class="red">FAQ</span></p>
+        <h2 class="h2" data-reveal>Asked up front.<br /><span class="muted">Answered plainly.</span></h2>
+      </div>
+      <div class="acc" data-acc data-reveal-group>
+        <details open>
+          <summary>What do I need to send you?<span class="plus"></span></summary>
+          <div class="acc-body"><p>Your raw footage, any logos or music you want used, and a few examples of videos you like. A short note on where the video will be posted helps too.</p></div>
+        </details>
+        <details>
+          <summary>How long does an edit take?<span class="plus"></span></summary>
+          <div class="acc-body"><p>It depends on the length and the amount of footage. We agree on a delivery date in the brief, before work starts.</p></div>
+        </details>
+        <details>
+          <summary>Can you work with phone footage?<span class="plus"></span></summary>
+          <div class="acc-body"><p>Yes. Most short-form content is shot on phones, and color and sound work make a big difference.</p></div>
+        </details>
+        <details>
+          <summary>Do you do regular monthly content?<span class="plus"></span></summary>
+          <div class="acc-body"><p>Yes. Ongoing edits for creators and brands are a big part of the work. Tell us how many videos a month you need.</p></div>
+        </details>
+        <details>
+          <summary>What formats do you deliver?<span class="plus"></span></summary>
+          <div class="acc-body"><p>Whatever the platform needs: 9:16 for Reels, TikTok and Shorts, 16:9 for YouTube, and square or 4:5 for feeds.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section class="sec" id="contact">
+    <div class="wrap">
+      <div class="contact-card">
+        <div class="contact-glow" aria-hidden="true"></div>
+        <div class="split contact-split">
+          <div class="split-left">
+            <p class="eyebrow mono">/ 09 / <span class="red">Contact</span></p>
+            <h2 class="h2 h2-lg" data-reveal>Got footage?<br /><span class="muted">Let's cut it.</span></h2>
+            <p class="sec-note" data-reveal>Tell us what you're making and pick how you'd like to talk. We reply as soon as we can.</p>
+            <div class="contact-ways" data-reveal-group>
+              <a class="way" data-contact="whatsapp" href="#" target="_blank" rel="noopener">
+                <span class="way-ic way-wa" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.3-4A8.5 8.5 0 1 1 8 19.6z"/></svg></span>
+                <span><b>WhatsApp</b><small>Chat with us directly</small></span><span class="way-go">↗</span>
+              </a>
+              <a class="way" data-contact="email" href="#">
+                <span class="way-ic way-mail" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+                <span><b>Email</b><small>Send us your project brief</small></span><span class="way-go">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <form class="form" id="brief-form" novalidate>
+            <label class="field"><span class="mono muted">Your name</span><input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" /></label>
+            <fieldset class="field">
+              <legend class="mono muted">What do you need?</legend>
+              <div class="pick">
+                <label><input type="checkbox" name="need" value="Short-form edits" checked /><span>Short-form</span></label>
+                <label><input type="checkbox" name="need" value="YouTube video" /><span>YouTube</span></label>
+                <label><input type="checkbox" name="need" value="Brand film" /><span>Brand film</span></label>
+                <label><input type="checkbox" name="need" value="Motion graphics" /><span>Motion graphics</span></label>
+                <label><input type="checkbox" name="need" value="Color & sound" /><span>Color &amp; sound</span></label>
+              </div>
+            </fieldset>
+            <label class="field"><span class="mono muted">Tell us about the project</span><textarea id="f-msg" name="msg" rows="4" placeholder="What are you filming, where will it be posted, and when do you need it?"></textarea></label>
+            <div class="form-btns">
+              <button type="submit" class="btn btn-wa" data-send="whatsapp">Send on WhatsApp</button>
+              <button type="submit" class="btn btn-white" data-send="email">Send by email</button>
+            </div>
+            <p class="form-note mono muted" id="form-note">Opens WhatsApp or your email app with your message filled in.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="mark"><span class="mark-dot"></span>Bruder Motion</a>
+        <p class="muted">Video editing and motion design for speakers, creators and brands.</p>
+      </div>
+      <div class="foot-cols">
+        <div><p class="mono muted">Navigate</p><a href="#work">Work</a><a href="#clients">Clients</a><a href="#services">Services</a><a href="#process">Process</a></div>
+        <div><p class="mono muted">More</p><a href="#team">Team</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+        <div><p class="mono muted">Contact</p><a data-contact="whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a><a data-contact="email" href="#">Email</a></div>
+      </div>
+    </div>
+    <p class="foot-wordmark" aria-hidden="true"><span data-chars>Bruder Motion</span></p>
+    <div class="foot-bottom mono muted"><span>© 2026 Bruder Motion. All rights reserved.</span><span>Website by Bruder Motion</span><a href="#top">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lb-frame"><iframe id="lb-iframe" title="Video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+  <div class="lb-bar"><a id="lb-link" class="mono" href="#" target="_blank" rel="noopener">Open on Vimeo ↗</a><button class="lb-close mono" id="lb-close" type="button">Close ✕</button></div>
+</div>
+<div class="cursor" id="cursor" aria-hidden="true"><span>Play</span></div>
+
+<script src="libs.js?v=35"></script>
+<script>
+  /* Backup: if libs.js is missing, load the same libraries from a CDN */
+  if (!window.gsap || !window.ScrollTrigger || !window.Lenis) {
+    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"><\/script>' +
+      '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"><\/script>' +
+      '<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"><\/script>');
+  }
+</script>
+<script src="bg.js?v=35"></script>
+<script src="main.js?v=35"></script>
+</body>
+</html>
