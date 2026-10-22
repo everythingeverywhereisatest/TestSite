@@ -187,15 +187,43 @@ const CONTACT = {
   // so there the clip starts muted on the first tap instead of waiting for a second tap
   const webkitOnly = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
     (/Safari/.test(navigator.userAgent) && !/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android/.test(navigator.userAgent));
+  /* While Vimeo starts up, the clip's own thumbnail and a spinner cover the player, so the box never sits
+     black or grey. The cover lifts as soon as the player reports the video is moving. It never blocks clicks,
+     and it lifts on its own if the player stays quiet (no messages, or autoplay was refused). */
+  const lbCover = $('.lb-cover');
+  let coverTimers = [], heard = false;
+  const lift = () => { coverTimers.forEach(clearTimeout); coverTimers = []; lbCover.classList.add('off'); };
+  const later = (fn, ms) => coverTimers.push(setTimeout(fn, ms));
+  const tell = (method, value) => { try { lbIframe.contentWindow.postMessage({ method, value }, 'https://player.vimeo.com'); } catch (_) { lift(); } };
+  addEventListener('message', e => {
+    if (e.origin !== 'https://player.vimeo.com' || e.source !== lbIframe.contentWindow || lbCover.classList.contains('off')) return;
+    let d = e.data;
+    if (typeof d === 'string') { try { d = JSON.parse(d); } catch (_) { return; } }
+    if (!d || !d.event) return;
+    heard = true;
+    if (d.event === 'ready') {
+      ['play', 'playing', 'timeupdate', 'playProgress'].forEach(v => tell('addEventListener', v));
+      coverTimers.forEach(clearTimeout); coverTimers = [];
+      later(lift, 3000);                                   // autoplay refused: show Vimeo's own play button
+    } else if (d.event === 'play') {
+      coverTimers.forEach(clearTimeout); coverTimers = [];
+      later(lift, 12000);                                  // never hold the cover too long
+    } else if (d.event === 'playing' || ((d.event === 'timeupdate' || d.event === 'playProgress') && d.data && d.data.seconds > 0)) {
+      lift();
+    }
+  });
+  lbIframe.addEventListener('load', () => { if (lbIframe.src) later(() => { if (!heard) lift(); }, 4000); });   // player sent nothing at all
   const openVideo = (id, vertical, h, thumb) => {
-    // the clip's own thumbnail sits behind the player while Vimeo starts up, so the box is never empty
-    lbFrame.style.backgroundImage = thumb ? `linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url("${thumb}")` : '';
+    lbCover.style.backgroundImage = thumb ? `linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),url("${thumb}")` : '';
+    lbCover.classList.remove('off'); heard = false;
+    coverTimers.forEach(clearTimeout); coverTimers = [];
+    later(lift, 15000);
     lbIframe.src = `https://player.vimeo.com/video/${id}?${h ? `h=${h}&` : ''}autoplay=1${webkitOnly ? '&muted=1' : ''}&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
     lbLink.href = `https://vimeo.com/${id}${h ? `/${h}` : ''}`;
     lbFrame.classList.toggle('vertical', !!vertical);
     lb.hidden = false; lenis && lenis.stop(); $('#lb-close').focus();
   };
-  const closeVideo = () => { lb.hidden = true; lbIframe.removeAttribute('src'); lbFrame.style.backgroundImage = ''; lenis && lenis.start(); };
+  const closeVideo = () => { lb.hidden = true; lift(); lbIframe.removeAttribute('src'); lenis && lenis.start(); };
   $$('[data-vimeo]').forEach(b => b.addEventListener('click', () => openVideo(b.dataset.vimeo, b.classList.contains('clip-v') || 'vertical' in b.dataset, b.dataset.vimeoH, b.querySelector('img')?.currentSrc)));
   // Warm up the Vimeo player once (its scripts then come from cache), when the work section nears view or a clip is touched
   let warmed = false;
