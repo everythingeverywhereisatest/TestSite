@@ -1,6 +1,6 @@
 /* Copyright (c) 2026 Bruder Motion. All rights reserved. See LICENSE. */
 /* Bruder Motion: page background
-   Cinematic film look behind all content: moving film grain, droplets left on the glass after rain, slow silver light leaks
+   Cinematic film look behind all content: moving film grain, slow silver light leaks
    drifting like a projector beam, a faint flicker, and a soft glow that follows the cursor.
    The light is a WebGL shader; the grain is a tiled noise layer stepped like film frames. */
 (() => {
@@ -23,81 +23,6 @@
   grain.style.backgroundImage = `url(${tile.toDataURL()})`;
   if (reduce) grain.style.animation = 'none';
   document.body.prepend(grain);
-
-  /* ── Just after rain: droplets left on the glass ─────────────────
-     Mostly still beads of every size, a few heavier drops slowly sliding down and
-     leaving a faint wet trail. Drops near the cursor catch its glow. */
-  const rain = document.createElement('canvas');
-  rain.id = 'bg-rain';
-  rain.setAttribute('aria-hidden', 'true');
-  document.body.prepend(rain);
-  const rc = rain.getContext('2d');
-  const small = innerWidth < 760;
-
-  // one droplet drawn once, then stamped at any size: dark lensing edge, soft body, bright highlight
-  const sprite = document.createElement('canvas');
-  sprite.width = sprite.height = 64;
-  const sc2 = sprite.getContext('2d');
-  let g = sc2.createRadialGradient(34, 36, 6, 32, 32, 30);
-  g.addColorStop(0, 'rgba(200,205,215,.10)');
-  g.addColorStop(.72, 'rgba(160,165,175,.16)');
-  g.addColorStop(.9, 'rgba(0,0,0,.55)');
-  g.addColorStop(1, 'rgba(0,0,0,0)');
-  sc2.fillStyle = g; sc2.beginPath(); sc2.arc(32, 32, 30, 0, 6.283); sc2.fill();
-  sc2.strokeStyle = 'rgba(235,240,250,.45)'; sc2.lineWidth = 1.6;          // rim light on the lower edge
-  sc2.beginPath(); sc2.arc(32, 32, 26, .35, 2.8); sc2.stroke();
-  g = sc2.createRadialGradient(23, 22, 0, 23, 22, 9);                       // specular highlight
-  g.addColorStop(0, 'rgba(255,255,255,.95)');
-  g.addColorStop(1, 'rgba(255,255,255,0)');
-  sc2.fillStyle = g; sc2.beginPath(); sc2.arc(23, 22, 9, 0, 6.283); sc2.fill();
-
-  let RW = 0, RH = 0, DPR = 1, beads = [], sliders = [];
-  const rnd = (a, b) => a + Math.random() * (b - a);
-  const bead = born => ({ x: rnd(0, RW), y: rnd(0, RH), r: 1 + 7 * Math.random() ** 2.4, a: rnd(.45, .8), age: born ? rnd(0, 40) : 0, life: rnd(25, 60) });
-  const slider = top => ({ x: rnd(0, RW), y: top ? rnd(-40, -10) : rnd(0, RH), r: rnd(6, 10), a: rnd(.6, .85), v: 0, rest: rnd(0, 4), trail: [] });
-  const rsize = () => {
-    DPR = Math.min(devicePixelRatio || 1, 2);
-    RW = innerWidth; RH = innerHeight;
-    rain.width = Math.round(RW * DPR); rain.height = Math.round(RH * DPR);
-    rc.setTransform(DPR, 0, 0, DPR, 0, 0);
-    beads = Array.from({ length: Math.min(small ? 45 : 110, Math.round(RW * RH / 11000)) }, () => bead(true));
-    sliders = Array.from({ length: small ? 3 : 6 }, () => slider(false));
-  };
-  rsize();
-  addEventListener('resize', rsize);
-  let rmx = -999, rmy = -999;
-  addEventListener('pointermove', e => { rmx = e.clientX; rmy = e.clientY; }, { passive: true });
-  const glow = (x, y) => 1 + 2.2 * Math.exp(-((x - rmx) ** 2 + (y - rmy) ** 2) / (2 * 180 * 180));
-  const stamp = (x, y, r, a) => { rc.globalAlpha = Math.min(a, 1); rc.drawImage(sprite, x - r, y - r, r * 2, r * 2); };
-
-  let rlast = performance.now();
-  const rainFrame = now => {
-    const dt = Math.min((now - rlast) / 1000, .05); rlast = now;
-    rc.clearRect(0, 0, RW, RH);
-    for (const b of beads) {
-      b.age += dt;
-      if (b.age > b.life) Object.assign(b, bead(false));
-      const fade = Math.min(1, b.age / 3, (b.life - b.age) / 3);           // ease in and out
-      stamp(b.x, b.y, b.r, b.a * fade * .75 * glow(b.x, b.y));
-    }
-    for (const s of sliders) {
-      // heavy drops stick, then slip a little, then stick again
-      if (s.rest > 0) { s.rest -= dt; s.v *= .9; }
-      else { s.v = Math.min(s.v + 40 * dt, rnd(18, 46)); if (Math.random() < dt * .5) s.rest = rnd(1.5, 6); }
-      s.y += s.v * dt; s.x += Math.sin(s.y * .02) * s.v * dt * .08;   // drift only while moving
-      if (s.v > 2) s.trail.push({ x: s.x, y: s.y - s.r * .6, a: 1 });
-      for (const t of s.trail) t.a -= dt * .08;
-      s.trail = s.trail.filter(t => t.a > 0).slice(-260);
-      rc.fillStyle = 'rgb(225,230,240)';
-      for (const t of s.trail) { rc.globalAlpha = t.a * .06 * glow(t.x, t.y); rc.fillRect(t.x - s.r * .2, t.y, s.r * .4, 1.2); }
-      stamp(s.x, s.y, s.r, s.a * .8 * glow(s.x, s.y));
-      if (s.y - s.r > RH && !s.trail.length) Object.assign(s, slider(true));
-    }
-    rc.globalAlpha = 1;
-    if (!reduce && !document.hidden) requestAnimationFrame(rainFrame);
-  };
-  requestAnimationFrame(rainFrame);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && !reduce) { rlast = performance.now(); requestAnimationFrame(rainFrame); } });
 
   /* ── Light leaks ───────────────────────────────────────────────── */
   const cvs = document.createElement('canvas');
