@@ -302,7 +302,7 @@ details[open] .plus::after{transform:translate(-50%,-50%) rotate(0)}
   .tool{position:static;transform:none!important;margin:0;width:auto;padding:20px;border-radius:var(--r-md);background:var(--panel);border:1px solid var(--line)}
 }
 
-/* Team */
+/* Editor */
 .team-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;max-width:500px;margin:0 auto;perspective:1400px}
 .editor{display:flex;flex-direction:column;gap:14px;padding:10px 10px 16px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line);transform-style:preserve-3d;will-change:transform}
 .editor-photo{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:20px;overflow:hidden;display:grid;place-items:center;border:1px dashed var(--line-2);background:radial-gradient(70% 50% at 50% 30%,rgba(255,255,255,.06),transparent 70%),#0d0d0d}
